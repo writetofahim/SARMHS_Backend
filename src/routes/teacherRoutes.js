@@ -40,7 +40,7 @@ router.post("/", upload.single("image"), async (req, res) => {
 // Get all teachers
 router.get("/", async (req, res) => {
   try {
-    const teachers = await Teacher.find();
+    const teachers = await Teacher.find().sort({ _id: -1 });
     res.json(teachers);
   } catch (error) {
     console.error(error);

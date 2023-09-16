@@ -27,7 +27,7 @@ const postNotice = async (req, res) => {
 const getNotice = async (req, res) => {
   const id = req.params.id;
   try {
-    console.log("I get notice ");
+    // console.log("I get notice ");
     const document = await Notice.findById(id);
     if (!document) {
       return res.status(404).send({ error: "No documents found" });

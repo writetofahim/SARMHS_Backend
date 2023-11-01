@@ -12,6 +12,7 @@ const memberRoutes = require("./src/routes/memberRoutes");
 const staffRoutes = require("./src/routes/staffRoutes");
 const events = require("./src/routes/events");
 const documentsRoutes = require("./src/routes/documentsRoutes");
+const admissionRouter = require("./src/routes/admissionRouter");
 
 // Allow requests from specific origins
 const corsOptions = {
@@ -38,6 +39,7 @@ app.use("/api/members", memberRoutes);
 app.use("/api/staffs", staffRoutes);
 app.use("/api/events", events);
 app.use("/api/documents", documentsRoutes);
+app.use("/api/admission", admissionRouter);
 
 // if home or root route
 app.get("/", (req, res) => {

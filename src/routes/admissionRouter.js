@@ -15,6 +15,7 @@ router.post("/", async (req, res) => {
     res.json({
       message: "Admission request submitted successfully",
       admissionId: admission.admissionId,
+      submittedData: admission,
     });
   } catch (error) {
     console.log(error);

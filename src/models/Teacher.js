@@ -5,6 +5,7 @@ const teachersSchema = new mongoose.Schema({
   position: String,
   filename: String,
   path: String,
+  phone: String,
 });
 
 module.exports = mongoose.model("Teacher", teachersSchema);

@@ -3,6 +3,7 @@ const multer = require("multer");
 const Teacher = require("../models/Teacher");
 
 const router = express.Router();
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/teachers");
@@ -34,6 +35,49 @@ router.post("/", upload.single("image"), async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Handle file upload for updating a teacher
+router.put("/:teacherId", upload.single("image"), async (req, res) => {
+  try {
+    const teacherId = req.params.teacherId;
+    console.log(teacherId);
+    // return res.status(404).json({ message: teacherId });
+    // Check if the teacher with the given ID exists
+    const existingTeacher = await Teacher.findById(teacherId);
+
+    if (!existingTeacher) {
+      return res.status(404).json({ message: "Teacher not found" });
+    }
+
+    // Remove the existing image file if a new image is uploaded
+    if (req.file && existingTeacher.filename) {
+      // Use the file system module to delete the file
+      const fs = require("fs");
+      const filePath = `uploads/teachers/${existingTeacher.filename}`;
+
+      // fs.unlinkSync(filePath);
+    }
+
+    // Update the existing teacher
+    existingTeacher.name = req.body.name;
+    existingTeacher.position = req.body.position;
+    existingTeacher.phone = req.body.phone;
+
+    // If a new image is uploaded, update the filename and path
+    console.log(req);
+    if (req.file) {
+      existingTeacher.filename = req.file.filename;
+      existingTeacher.path = req.file.path;
+    }
+
+    await existingTeacher.save();
+
+    res.status(200).json({ message: "Teacher updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error", error: error });
   }
 });
 

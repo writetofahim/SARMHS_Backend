@@ -91,5 +91,29 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+// DELETE teacher by ID
+router.delete("/:id", async (req, res) => {
+  const teacherId = req.params.id;
+
+  try {
+    // Remove the teacher directly by ID
+    const result = await Teacher.findByIdAndDelete(teacherId);
+    const path = result.path;
+    if (path) {
+      const fs = require("fs");
+      fs.unlinkSync(path);
+      //   console.log(result);
+    }
+
+    if (!result) {
+      return res.status(404).json({ message: "Teacher not found" });
+    }
+
+    res.json({ message: "Teacher deleted successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 module.exports = router;

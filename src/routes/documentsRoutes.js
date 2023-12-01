@@ -49,4 +49,28 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Delete a document by ID
+router.delete("/:id", async (req, res) => {
+  const documentId = req.params.id;
+
+  try {
+    // Find the document by ID and remove it
+    const deletedDocument = await Document.findByIdAndRemove(documentId);
+    const path = deletedDocument.path;
+    if (path) {
+      const fs = require("fs");
+      fs.unlinkSync(path);
+      //   console.log(result);
+    }
+    if (!deletedDocument) {
+      return res.status(404).json({ message: "Document not found" });
+    }
+
+    res.json({ message: "Document deleted successfully", deletedDocument });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 module.exports = router;
